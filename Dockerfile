@@ -1,37 +1,35 @@
 # ---------- STAGE 1 : Build ----------
-
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /build
 
-# copy only pom first (docker cache optimization)
-
+# Copy pom.xml first for Docker layer caching
 COPY pom.xml .
+
+# Download dependencies
 RUN mvn -B -q -e -DskipTests dependency:go-offline
 
-# now copy source
-
+# Copy source code
 COPY src ./src
 
-# build jar
-
-RUN mvn clean package -DskipTests
+# Build JAR
+RUN mvn clean package -DskipTests -q
 
 # ---------- STAGE 2 : Run ----------
-
 FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
 
-# copy jar from build stage
-
+# Copy JAR from build stage
 COPY --from=build /build/target/*.jar app.jar
 
-# IMPORTANT: cloud platforms provide PORT env variable
-
-ENV PORT=8080
+# Expose port
 EXPOSE 8080
 
-# Spring Boot must bind to 0.0.0.0 in containers
+# Health check (optional but recommended)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:8080/actuator/health || exit 1
 
-ENTRYPOINT ["java","-Dserver.port=${PORT}","-Dserver.address=0.0.0.0","-jar","app.jar"]
+# Run the application
+# PORT is provided by Render automatically
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -Dserver.address=0.0.0.0 -Dspring.profiles.active=prod -jar app.jar"]
