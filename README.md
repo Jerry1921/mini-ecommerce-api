@@ -3,11 +3,11 @@
 A RESTful backend application that simulates a basic online shopping platform.
 The system supports authentication, role-based authorization, product management, shopping cart operations, and order processing with proper business rules and data consistency.
 
----
+
 
 ##  Features
 
-### 🔐 Authentication & Authorization
+### Authentication & Authorization
 
 * User Registration
 * User Login (JWT Based)
@@ -17,27 +17,26 @@ The system supports authentication, role-based authorization, product management
     * **CUSTOMER**
 * Secure password encryption (BCrypt)
 
----
 
-### 📦 Product Management (Admin)
+
+### Product Management (Admin)
 
 * Add new product
 * Update product information
 * Delete product
 * Update stock quantity
 
----
 
-### 🛍️ Customer Operations
+### Customer Operations
 
 * Add product to cart
 * Remove product from cart
 * View cart items
 * Place order
 
----
 
-### 📑 Order System
+
+### Order System
 
 * Order total calculated in backend
 * Automatic stock deduction after successful order
@@ -45,7 +44,6 @@ The system supports authentication, role-based authorization, product management
 * Prevent negative inventory
 * Data consistency using database transactions
 
----
 
 ## Tech Stack
 
@@ -64,7 +62,7 @@ The system supports authentication, role-based authorization, product management
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1️⃣ Clone Repository
 
@@ -108,7 +106,7 @@ http://localhost:8080
 
 ---
 
-## 🔑 Authentication
+## Authentication
 
 Login endpoint:
 
